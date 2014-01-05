@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using DaVinci.Helpers;
+using Styx;
 using Styx.Common;
 
 namespace DaVinci.GUI {
@@ -38,7 +39,7 @@ namespace DaVinci.GUI {
         // ===========================================================
 
         public static string SettingsFilePath {
-            get { return Path.Combine(Utilities.AssemblyDirectory, string.Format(@"Settings\{0}\{1}.xml", "Chameleon", "General")); }
+            get { return Path.Combine(Utilities.AssemblyDirectory, string.Format(@"Settings\{0}\{1}-{2}\{3}.xml", "DaVinci", StyxWoW.Me.Name, StyxWoW.Me.RealmName, "GeneralSettings")); }
         }
 
         // ===========================================================
