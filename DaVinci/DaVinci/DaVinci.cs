@@ -80,18 +80,6 @@ namespace DaVinci {
             }
         }
 
-        public override bool IsPrimaryType {
-            get {
-                return base.IsPrimaryType;
-            }
-        }
-
-        public override bool RequirementsMet {
-            get {
-                return base.RequirementsMet;
-            }
-        }
-
         public override void Start() {
             try {
                 ProfileManager.LoadEmpty();
@@ -156,7 +144,7 @@ namespace DaVinci {
         }
 
         private static Composite UsePreCombatRoutine() {
-            return new Decorator(ret => !Character.Me.Combat,
+            return new Decorator(ret => !StyxWoW.Me.Combat,
                 new PrioritySelector(
                     RoutineManager.Current.RestBehavior ?? new ActionAlwaysFail(),
                     RoutineManager.Current.PreCombatBuffBehavior ?? new ActionAlwaysFail()
@@ -165,7 +153,7 @@ namespace DaVinci {
         }
 
         private static Composite UseCombatRoutine() {
-            return new Decorator(ret => !Character.Me.Mounted && Character.Me.IsActuallyInCombat,
+            return new Decorator(ret => !StyxWoW.Me.Mounted && StyxWoW.Me.IsActuallyInCombat,
                 new PrioritySelector(
                     RoutineManager.Current.HealBehavior ?? new ActionAlwaysFail(),
                     RoutineManager.Current.CombatBuffBehavior ?? new ActionAlwaysFail(),
@@ -175,7 +163,7 @@ namespace DaVinci {
         }
 
         private static Composite UseDeathRoutine() {
-            return new Decorator(ret => !Character.Me.IsAlive,
+            return new Decorator(ret => !StyxWoW.Me.IsAlive,
                 new PrioritySelector(
                     new DecoratorNeedToRelease(new ActionReleaseFromCorpse()),
                     new DecoratorNeedToMoveToCorpse(LevelBot.CreateDeathBehavior()),
@@ -186,7 +174,7 @@ namespace DaVinci {
         }
 
         private static Composite PriorityTree() {
-            return new Decorator(ret => !Character.Me.Combat,
+            return new Decorator(ret => !StyxWoW.Me.Combat,
                 new Action(context => PriorityTreeState.TreeStateHandler())
             );
         }

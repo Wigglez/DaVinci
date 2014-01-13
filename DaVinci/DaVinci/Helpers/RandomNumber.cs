@@ -1,10 +1,6 @@
 ﻿/* BotBase created by AknA and Wigglez */
 
-#region Namespaces
-
 using System;
-
-#endregion
 
 namespace DaVinci.Helpers {
     public class RandomNumber {

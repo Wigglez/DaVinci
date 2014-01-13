@@ -62,6 +62,7 @@
     <Compile Include="Helpers\Enemy.cs" />
     <Compile Include="Helpers\ObjectXMLSerializer.cs" />
     <Compile Include="Helpers\PriorityTreeState.cs" />
+    <Compile Include="Helpers\Questing.cs" />
     <Compile Include="Helpers\RandomNumber.cs" />
     <Compile Include="Helpers\WindowSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

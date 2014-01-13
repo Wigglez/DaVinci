@@ -38,7 +38,6 @@ namespace DaVinci.Helpers {
         // Getter & Setter
         // ===========================================================
 
-        public static LocalPlayer Me { get { return StyxWoW.Me; } }
 
         // ===========================================================
         // Methods for/from SuperClass/Interfaces
@@ -49,8 +48,8 @@ namespace DaVinci.Helpers {
         // ===========================================================
 
         public static void IncludeTargetsFilter(List<WoWObject> incomingUnits, HashSet<WoWObject> outgoingUnits) {
-            if(Me.GotTarget && Me.CurrentTarget.Attackable) {
-                outgoingUnits.Add(Me.CurrentTarget);
+            if(StyxWoW.Me.GotTarget && StyxWoW.Me.CurrentTarget.Attackable) {
+                outgoingUnits.Add(StyxWoW.Me.CurrentTarget);
             }
         }
 
@@ -73,21 +72,21 @@ namespace DaVinci.Helpers {
             }
         }
 
-        public static bool IsCastingOrChanneling() { return Me.IsCasting || Me.IsChanneling; }
+        public static bool IsCastingOrChanneling() { return StyxWoW.Me.IsCasting || StyxWoW.Me.IsChanneling; }
 
         public static void StuckHandler() {
-            if(Me.Combat) {
+            if(StyxWoW.Me.Combat) {
                 PriorityTreeState.StuckTimer.Reset();
                 return;
             }
 
             if(StuckOldLocation == WoWPoint.Empty) {
-                StuckOldLocation = Me.Location;
+                StuckOldLocation = StyxWoW.Me.Location;
                 return;
             }
 
-            if(StuckOldLocation.Distance(Me.Location) > 3) {
-                StuckOldLocation = Me.Location;
+            if(StuckOldLocation.Distance(StyxWoW.Me.Location) > 3) {
+                StuckOldLocation = StyxWoW.Me.Location;
                 PriorityTreeState.StuckTimer.Reset();
                 return;
             }
@@ -117,11 +116,11 @@ namespace DaVinci.Helpers {
             do {
                 float x, y, z;
                 do {
-                    x = Me.Location.X + RandomNumber.GenerateRandomFloat(-20, 20);
-                    y = Me.Location.Y + RandomNumber.GenerateRandomFloat(-20, 20);
+                    x = StyxWoW.Me.Location.X + RandomNumber.GenerateRandomFloat(-20, 20);
+                    y = StyxWoW.Me.Location.Y + RandomNumber.GenerateRandomFloat(-20, 20);
                 } while(!Navigator.FindHeight(x, y, out z));
                 myNewWoWPoint = new WoWPoint(x, y, z);
-            } while(!Navigator.CanNavigateFully(Me.Location, myNewWoWPoint) && myNewWoWPoint.Distance(Me.Location) < 5);
+            } while(!Navigator.CanNavigateFully(StyxWoW.Me.Location, myNewWoWPoint) && myNewWoWPoint.Distance(StyxWoW.Me.Location) < 5);
 
             DaVinci.CustomDiagnosticLog("Unstuck: Moving to " + myNewWoWPoint);
             Navigator.MoveTo(myNewWoWPoint);
@@ -133,12 +132,12 @@ namespace DaVinci.Helpers {
             do {
                 float x, y, z;
                 do {
-                    x = Me.Location.X + RandomNumber.GenerateRandomFloat(-20, 20);
-                    y = Me.Location.Y + RandomNumber.GenerateRandomFloat(-20, 20);
+                    x = StyxWoW.Me.Location.X + RandomNumber.GenerateRandomFloat(-20, 20);
+                    y = StyxWoW.Me.Location.Y + RandomNumber.GenerateRandomFloat(-20, 20);
                 } while(!Navigator.FindHeight(x, y, out z));
 
                 myNewWoWPoint = new WoWPoint(x, y, z);
-            } while(!Navigator.CanNavigateFully(Me.Location, myNewWoWPoint) && myNewWoWPoint.Distance(Me.Location) < 5);
+            } while(!Navigator.CanNavigateFully(StyxWoW.Me.Location, myNewWoWPoint) && myNewWoWPoint.Distance(StyxWoW.Me.Location) < 5);
 
             DaVinci.CustomDiagnosticLog("Vanish: Moving to " + myNewWoWPoint + " for safety.");
             Navigator.MoveTo(myNewWoWPoint);
@@ -152,7 +151,7 @@ namespace DaVinci.Helpers {
 
             // If we can navigate to the target, calculate how to get to it
 
-            if(PickPocketTarget.Target.IsMoving && Me.IsBehind(PickPocketTarget.Target)) {
+            if(PickPocketTarget.Target.IsMoving && StyxWoW.Me.IsBehind(PickPocketTarget.Target)) {
                 PickPocketTarget.TargetLocation = WoWMovement.CalculatePointFrom(PickPocketTarget.Target.Location, 6f);
             } else {
                 PickPocketTarget.TargetLocation = WoWMovement.CalculatePointFrom(PickPocketTarget.Target.Location, 8f);
@@ -168,7 +167,7 @@ namespace DaVinci.Helpers {
          */
 
         public static bool HasFullInventory() {
-            return Me.FreeBagSlots <= 5; // DaVinciSettings.Instance.InventoryFull (fix later)
+            return StyxWoW.Me.FreeBagSlots <= 5; // DaVinciSettings.Instance.InventoryFull (fix later)
         }
 
         /*
@@ -178,7 +177,7 @@ namespace DaVinci.Helpers {
             }
 
             // If we can navigate to the target
-            return Navigator.CanNavigateFully(Me.Location, PickPocketTarget.Target.Location);
+            return Navigator.CanNavigateFully(StyxWoW.Me.Location, PickPocketTarget.Target.Location);
         }
         */
 
@@ -188,7 +187,7 @@ namespace DaVinci.Helpers {
                 return false;
             }
 
-            return PickPocketTarget.Target.Location.Distance(Me.Location) <= 9f;
+            return PickPocketTarget.Target.Location.Distance(StyxWoW.Me.Location) <= 9f;
         }
         */
 
@@ -199,9 +198,9 @@ namespace DaVinci.Helpers {
             return true;
         }
 
-        public static bool IsOnVendorMount() { return Me.HasAura(AllianceTundraMammothSpell) || Me.HasAura(HordeTundraMammothSpell) || Me.HasAura(ExpeditionYakSpell); }
+        public static bool IsOnVendorMount() { return StyxWoW.Me.HasAura(AllianceTundraMammothSpell) || StyxWoW.Me.HasAura(HordeTundraMammothSpell) || StyxWoW.Me.HasAura(ExpeditionYakSpell); }
 
-        public static Mount.MountWrapper CheckVendorMount() { return Me.IsAlliance ? Mount.GroundMounts.FirstOrDefault(mount => mount.CreatureId == AllianceTundraMammothNPC || mount.CreatureId == ExpeditionYakNPC) : Mount.GroundMounts.FirstOrDefault(mount => mount.CreatureId == HordeTundraMammothNPC || mount.CreatureId == ExpeditionYakNPC); }
+        public static Mount.MountWrapper CheckVendorMount() { return StyxWoW.Me.IsAlliance ? Mount.GroundMounts.FirstOrDefault(mount => mount.CreatureId == AllianceTundraMammothNPC || mount.CreatureId == ExpeditionYakNPC) : Mount.GroundMounts.FirstOrDefault(mount => mount.CreatureId == HordeTundraMammothNPC || mount.CreatureId == ExpeditionYakNPC); }
 
 
         // ===========================================================
